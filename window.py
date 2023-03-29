@@ -12,7 +12,7 @@ by pressing the spacebar.
 import sys
 import pygame
 
-from main import Maze
+from maze import Maze
 
 
 def create_window(maze: Maze) -> None:
