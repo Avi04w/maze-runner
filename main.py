@@ -18,4 +18,4 @@ if __name__ == '__main__':
 
     maze = Maze(40)  # Change this value to set the size of the maze (n x n)
 
-    window.run(maze)
+    window.create_window(maze)
