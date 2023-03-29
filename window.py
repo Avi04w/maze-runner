@@ -1,12 +1,18 @@
-import sys, pygame, main
+"""DOCSTRING"""
+
+import pygame
+import sys
+from maze import Maze
 
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 800
 
+mode: bool
+correct_path = []
 
-def run(maze: main.Maze) -> None:
-    """
-    """
+
+def run(maze: Maze) -> None:
+    """DOCSTRING"""
     cell_size = 500 / maze.size
     player_color = (255, 0, 0)
 
@@ -84,15 +90,20 @@ def run(maze: main.Maze) -> None:
         # draw yellow square at end cell
 
         pygame.draw.rect(screen, (250, 250, 0),
-                         pygame.Rect(xo + (maze.size - 1) * cell_size, yo + (maze.size - 1) * cell_size, cell_size, cell_size))
+                         pygame.Rect(xo + (maze.size - 1) * cell_size, yo + (maze.size - 1) * cell_size, cell_size,
+                                     cell_size))
 
         # draw trail
         for i in range(0, len(trail)):
-            pygame.draw.circle(screen, player_color, (xo + (trail[i][0] + 0.5) * cell_size + 1, yo + (trail[i][1] + 0.5) * cell_size + 1), 6)
+            pygame.draw.circle(screen, player_color,
+                               (xo + (trail[i][0] + 0.5) * cell_size + 1, yo + (trail[i][1] + 0.5) * cell_size + 1), 6)
         for i in range(1, len(trail)):
-            pygame.draw.line(screen, player_color, (xo + (trail[i-1][0] + 0.5) * cell_size, yo + (trail[i-1][1] + 0.5) * cell_size), (xo + (trail[i][0] + 0.5) * cell_size, yo + (trail[i][1] + 0.5) * cell_size), 12)
+            pygame.draw.line(screen, player_color,
+                             (xo + (trail[i - 1][0] + 0.5) * cell_size, yo + (trail[i - 1][1] + 0.5) * cell_size),
+                             (xo + (trail[i][0] + 0.5) * cell_size, yo + (trail[i][1] + 0.5) * cell_size), 12)
         # draw player
-        pygame.draw.circle(screen, player_color, (xo + (x + 0.5) * cell_size, yo + (y + 0.5) * cell_size), int(cell_size * 0.3))
+        pygame.draw.circle(screen, player_color, (xo + (x + 0.5) * cell_size, yo + (y + 0.5) * cell_size),
+                           int(cell_size * 0.3))
 
         # draw maze
         for i in range(0, maze.size):
@@ -117,3 +128,17 @@ def run(maze: main.Maze) -> None:
                                      (xo + (i + 1) * cell_size, yo + (j + 1) * cell_size), 4)
 
         pygame.display.update()
+
+
+if __name__ == '__main__':
+    import doctest
+
+    doctest.testmod(verbose=True)
+
+    import python_ta
+
+    python_ta.check_all(config={
+        'max-line-length': 120,
+        'extra-imports': ['random', 'a3_network', 'a3_part1'],
+        'disable': ['unused-import']
+    })
