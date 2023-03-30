@@ -188,6 +188,19 @@ class Maze:
             # We didn't find an existing vertex for both items.
             raise ValueError
 
+    def get_neighbours(self, item: Any) -> set:
+        """Return a set of the neighbours of the given item.
+
+        Note that the *items* are returned, not the _Vertex objects themselves.
+
+        Raise a ValueError if item does not appear as a vertex in this graph.
+        """
+        if item in self._vertices:
+            v = self._vertices[item]
+            return {neighbour.item for neighbour in v.neighbours}
+        else:
+            raise ValueError
+
 
 if __name__ == '__main__':
     import doctest
