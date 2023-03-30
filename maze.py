@@ -85,9 +85,9 @@ class Maze:
     def make_maze(self, vertex: _Vertex, visited: set[_Vertex]) -> None:
         """This functions creates a maze.
 
-        Takes a list of unconnected vertices and creates a Minimum Spanning Tree.
-        This ensures that every vertex is connected.
-        This means that there is always a path to the end of the maze.
+        Takes a list of unconnected vertices and creates a graph by connecting random neighbouring vertices.
+        This function ensures that every vertex is connected.
+        This means that there is always a path to the every node of the maze, including the end.
 
         Conceptually, every spot on the maze is surrounded by 4 walls, and by connecting 2 vertices,
         we are removing the wall between them, creating a path.
