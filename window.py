@@ -1,4 +1,7 @@
-"""
+"""CSC111 Winter 2023 Course Project: Maze Runner
+
+===============================
+
 This python module is responsible for the visual and interactive aspect of our project.
 
 The simulation begins by calling create_window with a valid maze, and then the user can interact with
@@ -7,17 +10,23 @@ bottom right corner.
 
 If at any point the player wants to give up and see the correct solution for the maze, they can do so
 by pressing the spacebar.
-"""
 
+===============================
+
+All forms of distribution of this code, whether as given or with any changes, are
+expressly prohibited. For more information on copyright for CSC111 materials,
+please consult our Course Syllabus.
+
+This file is Copyright (c) 2023 Avi Walia, Alex Yao, Sarina Li, Anthony Nicholas Fetelya
+"""
 import sys
 import pygame
-
 from maze import Maze
 
 
 def create_window(maze: Maze) -> None:
     """
-    function that creates the pygame window and handles the main game loop that allows for player movement
+    This function creates the pygame window and handles the main game loop that allows for player movement
     through the maze as well as showing the correct path when necessary.
     """
     # PLAYER DATA
@@ -81,7 +90,7 @@ def create_window(maze: Maze) -> None:
 
 def update_position(event: pygame.event.Event, x: int, y: int, maze: Maze) -> tuple[int, int]:
     """
-    Check if movement keys have been pressed and update the player's position accordingly.
+    Checks if movement keys have been pressed and update the player's position accordingly.
     This function returns the player's updated position as a tuple (x, y)
 
     Preconditions
@@ -156,3 +165,17 @@ def draw_maze(screen: pygame.Surface, maze: Maze, trail: list[tuple[int, int]], 
             if (i, j + 1) not in neighbours:
                 pygame.draw.line(screen, (0, 0, 0), (xo + i * gsize, yo + (j + 1) * gsize),
                                  (xo + (i + 1) * gsize, yo + (j + 1) * gsize), 4)
+
+
+if __name__ == '__main__':
+    import doctest
+
+    doctest.testmod(verbose=True)
+
+    import python_ta
+
+    python_ta.check_all(config={
+        'max-line-length': 120,
+        'extra-imports': ['random', 'pygame', 'sys', 'maze'],
+        'disable': ['unused-import']
+    })

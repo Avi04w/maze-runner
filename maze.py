@@ -1,4 +1,21 @@
-"""Docstring"""
+"""CSC111 Winter 2023 Course Project: MazeRunner
+
+===============================
+
+This module contains the functions neccessary to create the maze.
+
+It also containes the functions neccessary to solve the maze and return the list of moves
+of the shortest path to solve it.
+
+Copyright and Usage Information
+===============================
+
+All forms of distribution of this code, whether as given or with any changes, are
+expressly prohibited. For more information on copyright for CSC111 materials,
+please consult our Course Syllabus.
+
+This file is Copyright (c) 2023 Avi Walia, Alex Yao, Sarina Li, Anthony Nicholas Fetelya
+"""
 
 from __future__ import annotations
 import random
@@ -6,7 +23,18 @@ from typing import Any
 
 
 class _Vertex:
-    """Docstring"""
+    """A vertex that represents a spoit in the maze.
+
+        Instance Attributes
+        - item:
+            The location of this vertex, saved as a tuple (x, y)
+        - neighbours:
+            The vertices that are connected with the Vertex.
+            2 connected vertices means that there exists a path between them.
+
+        Representation Invariants:
+        - self not in self.neighbours
+        """
     item: tuple[int, int]
     neighbours: set[_Vertex]
 
@@ -16,13 +44,32 @@ class _Vertex:
 
 
 class Maze:
-    """Docstring"""
-    _vertices: dict[Any, _Vertex]
+    """A Maze.
+
+        Instance Attributes
+        - size:
+            The size of the maze (will be a square of size x size)
+
+        Representation Invariants:
+        - all(item == self._vertices[item].item for item in self._vertices)
+        """
+    # Private Instance Attributes:
+    #     - _vertices: A collection of the vertices contained in this graph.
+    #                  Maps item to _Vertex instance.
+    _vertices: dict[tuple[int, int], _Vertex]
     size: int
 
     def __init__(self, size: int) -> None:
-        self._vertices = {}
+        """Initialize a new maze.
+
+        We capped the size of the maze (sidelength) to be 40 to stop recursion errors
+        from occurring with too large and complex mazes.
+
+        Preconditions:
+            - size <= 40
+        """
         self.size = size
+        self._vertices = {}
 
         # make 2-d grid of vertices
         for i in range(size):
@@ -36,7 +83,19 @@ class Maze:
         self.make_maze(start, set())
 
     def make_maze(self, vertex: _Vertex, visited: set[_Vertex]) -> None:
-        """docstring"""
+        """This functions creates a maze.
+
+        Takes a list of unconnected vertices and creates a Minimum Spanning Tree.
+        This ensures that every vertex is connected.
+        This means that there is always a path to the end of the maze.
+
+        Conceptually, every spot on the maze is surrounded by 4 walls, and by connecting 2 vertices,
+        we are removing the wall between them, creating a path.
+
+        Preconditions:
+            - all(len(v.neighbours) == 0 for v in self._vertices)
+            - The maze is solvable
+        """
         visited.add(vertex)
         neighbours = self.in_bound_neighbours(vertex, visited)
         neighbour = None
@@ -51,8 +110,13 @@ class Maze:
                 neighbour = random.choice(neighbours)
 
     def solve_maze(self) -> list[tuple[int, int]]:
-        """
-        DOCSTRING
+        """This functions solves the maze using a BFS algorithm.
+
+        It returns a list of tuples which correspond to the path you must take to solve the maze.
+
+        Preconditions:
+            - vertex in self._vertices
+            - The maze is solvable
         """
         queue = [[(0, 0)]]
         visited = set()
@@ -69,7 +133,15 @@ class Maze:
                     queue.append(new_path)
 
     def in_bound_neighbours(self, vertex: _Vertex, visited: set[_Vertex]) -> list[_Vertex]:
-        """docstring"""
+        """Returns a list of neighbouring vertices that may be potential neighbours to the given vertex.
+        This incldues the vertices above, below, to the right, and to the left.
+
+        If a potential neighbour is not in bounds or has already been visited,
+        it is not included in the returned list.
+
+        Preconditions:
+            - vertex.item in self._vertices
+        """
         address = vertex.item
         x_add = address[0]
         y_add = address[1]
@@ -116,17 +188,6 @@ class Maze:
             # We didn't find an existing vertex for both items.
             raise ValueError
 
-    def get_neighbours(self, item: Any) -> set:
-        """Return a set of the neighbours of the given item.
-
-        Raise a ValueError if item does not appear as a vertex in this graph.
-        """
-        if item in self._vertices:
-            v = self._vertices[item]
-            return {neighbour.item for neighbour in v.neighbours}
-        else:
-            raise ValueError
-
 
 if __name__ == '__main__':
     import doctest
@@ -137,6 +198,6 @@ if __name__ == '__main__':
 
     python_ta.check_all(config={
         'max-line-length': 120,
-        'extra-imports': ['random', 'a3_network', 'a3_part1'],
+        'extra-imports': ['random'],
         'disable': ['unused-import']
     })
